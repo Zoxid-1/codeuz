@@ -1,0 +1,648 @@
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0d0d;--card:#141414;--border:#252525;--accent:#00ff88;
+  --text:#f0f0f0;--muted:#666;--code-bg:#0f1117;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(13,13,13,.96);backdrop-filter:blur(10px);z-index:100}
+.logo{font-size:20px;font-weight:900;color:var(--accent);cursor:pointer;font-family:'Courier New',monospace;background:none;border:none;padding:0;letter-spacing:-1px}
+.nav-links{display:flex;gap:16px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;cursor:pointer}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--accent);color:#000;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;white-space:nowrap}
+
+.hero{padding:60px 20px 40px;max-width:860px;margin:0 auto}
+.badge{display:inline-block;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35);color:#a78bfa;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:20px;text-transform:uppercase;letter-spacing:.5px}
+.hero h1{font-size:clamp(32px,6vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+.hero h1 .hl{color:var(--accent)}
+.hero p{font-size:clamp(15px,2.5vw,18px);color:var(--muted);max-width:520px;margin-bottom:28px;line-height:1.7}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-p{background:var(--accent);color:#000;padding:11px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none}
+.btn-s{background:transparent;color:var(--text);padding:11px 24px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--border)}
+.stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:36px;padding-top:32px;border-top:1px solid var(--border)}
+.stat-v{font-size:28px;font-weight:800;color:var(--accent);letter-spacing:-1px}
+.stat-l{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* hero code preview */
+.preview-wrap{max-width:860px;margin:0 auto 50px;padding:0 20px}
+.cw{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ctb{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c0c0f;border-bottom:1px solid var(--border)}
+.dot{width:11px;height:11px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.ctb-lbl{margin-left:8px;font-size:12px;color:var(--muted);font-family:'Courier New',monospace}
+.cbody{display:grid;grid-template-columns:1fr 1fr}
+@media(max-width:600px){.cbody{grid-template-columns:1fr}}
+.cpane{padding:18px;font-family:'Courier New',monospace;font-size:12px;line-height:2}
+.cpane:first-child{border-right:1px solid var(--border)}
+.opane{padding:18px}
+.olbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:block}
+.oh1{font-size:20px;font-weight:700;margin-bottom:8px}
+.op{font-size:13px;color:#aaa;margin-bottom:10px}
+.olink{color:#7c3aed;text-decoration:underline;font-size:13px}
+
+/* syntax */
+.cd{color:#ff79c6;font-style:italic}
+.ct{color:#ff6b9d}
+.cb{color:#bd93f9}
+.ca{color:#50fa7b}
+.ce{color:#ff79c6}
+.cv{color:#f1fa8c}
+.cx{color:#f8f8f2}
+.cc{color:#6272a4;font-style:italic}
+.ck{color:#8be9fd}
+.cnum{color:#bd93f9}
+.cstr{color:#f1fa8c}
+.cprop{color:#50fa7b}
+.csel{color:#ff6b9d}
+
+section{max-width:860px;margin:0 auto;padding:0 20px 50px}
+.slbl{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+section h2{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
+section>p{color:var(--muted);margin-bottom:28px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:border-color .2s,background .2s;display:block;text-decoration:none}
+.tc:hover{border-color:var(--accent);background:#181818}
+.ti{font-size:18px;margin-bottom:7px;display:block}
+.tn{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.td{font-size:11px;color:var(--muted);line-height:1.4}
+.tnum{font-size:10px;color:var(--accent);margin-top:7px;font-weight:600}
+
+/* LESSON */
+#lv{display:none;max-width:860px;margin:0 auto;padding:20px 20px 60px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer;background:none;border:none;margin-bottom:20px;padding:0}
+.back:hover{color:var(--text)}
+.lh{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:28px}
+.lh h2{font-size:clamp(22px,4vw,30px);font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.lh p{color:var(--muted);font-size:15px}
+.ls{margin-bottom:40px}
+.ls h3{font-size:17px;font-weight:600;margin-bottom:10px;border-left:3px solid var(--accent);padding-left:10px}
+.ls>p{color:#ccc;line-height:1.8;margin-bottom:10px}
+
+/* CODE TABLE */
+.code-table{width:100%;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:14px 0;font-size:13px}
+.ct-header{display:grid;grid-template-columns:1fr 1fr;background:#0c0c0f;border-bottom:1px solid var(--border)}
+@media(max-width:600px){.ct-header{grid-template-columns:1fr}.ct-header span:last-child{display:none}}
+.ct-header span{padding:9px 14px;font-size:11px;color:var(--muted);font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.5px}
+.ct-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);min-height:42px}
+.ct-row:last-child{border-bottom:none}
+@media(max-width:600px){.ct-row{grid-template-columns:1fr}}
+.ct-code{padding:10px 14px;font-family:'Courier New',monospace;font-size:12px;background:var(--code-bg);display:flex;align-items:flex-start;line-height:1.7;border-right:1px solid var(--border)}
+@media(max-width:600px){.ct-code{border-right:none;border-bottom:1px solid var(--border)}}
+.ct-desc{padding:10px 14px;font-size:13px;color:#ccc;line-height:1.6;display:flex;align-items:flex-start}
+.ct-desc span{color:var(--accent);font-weight:600;display:block;font-size:11px;margin-bottom:2px}
+
+/* CODE BLOCK */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:14px 0}
+.cb-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#0c0c0f;border-bottom:1px solid var(--border)}
+.cb-bar span{font-size:11px;color:#555;margin-left:8px;font-family:'Courier New',monospace}
+.cb-lines{padding:16px 18px;font-family:'Courier New',monospace;font-size:12.5px;line-height:1;overflow-x:auto}
+.ln{display:flex;align-items:flex-start;margin-bottom:0;min-height:28px}
+.ln-num{color:#333;min-width:28px;text-align:right;margin-right:16px;font-size:11px;padding-top:1px;user-select:none;flex-shrink:0}
+.ln-code{flex:1;line-height:1.7}
+.ln-explain{display:block;color:#4a5568;font-size:11px;margin-left:44px;margin-bottom:6px;font-family:'Segoe UI',system-ui,sans-serif;border-left:2px solid #1e2533;padding-left:10px;line-height:1.5;font-style:italic}
+
+.info{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);border-radius:8px;padding:14px 16px;margin:14px 0;font-size:13px;color:#ccc;line-height:1.7}
+.info strong{color:var(--accent)}
+
+.lnav{display:flex;justify-content:space-between;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);gap:10px}
+.lnav button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500}
+.lnav button:hover{border-color:var(--accent)}
+.lnav .nb{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+
+footer{border-top:1px solid var(--border);padding:24px 20px;display:flex;justify-content:space-between;align-items:center;max-width:860px;margin:0 auto}
+footer p{font-size:13px;color:var(--muted)}
+</style>
+
+<nav>
+  <button class="logo" onclick="showHome()">NC</button>
+  <div class="nav-links">
+    <a onclick="showHome()">Bosh sahifa</a>
+    <a onclick="showHome();setTimeout(()=>document.getElementById('darslar').scrollIntoView({behavior:'smooth'}),50)">Darslar</a>
+  </div>
+  <button class="nav-cta" onclick="showLesson(0)">Boshlash</button>
+</nav>
+
+<div id="hv">
+  <div class="hero">
+    <span class="badge">🇺🇿 O'zbek tilida · Bepul</span>
+    <h1>HTML ni <span class="hl">to'liq</span><br>o'rganing</h1>
+    <p>Web-sayt yaratishning asosi — HTML. Noldan professional darajagacha, o'zbek tilida, bepul va interaktiv darslar bilan.</p>
+    <div class="hero-btns">
+      <button class="btn-p" onclick="showLesson(0)">Hoziroq boshlash →</button>
+      <button class="btn-s" onclick="document.getElementById('darslar').scrollIntoView({behavior:'smooth'})">Darslarni ko'rish</button>
+    </div>
+    <div class="stats">
+      <div><div class="stat-v">12</div><div class="stat-l">Dars mavzusi</div></div>
+      <div><div class="stat-v">100%</div><div class="stat-l">Bepul</div></div>
+      <div><div class="stat-v">O'z</div><div class="stat-l">O'zbek tilida</div></div>
+    </div>
+  </div>
+
+  <div class="preview-wrap">
+    <div class="cw">
+      <div class="ctb">
+        <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+        <span class="ctb-lbl">index.html</span>
+      </div>
+      <div class="cbody">
+        <div class="cpane" id="hero-code"></div>
+        <div class="opane">
+          <span class="olbl">Natija →</span>
+          <div class="oh1">Salom, dunyo!</div>
+          <div class="op">Bu mening saytim.</div>
+          <a class="olink" href="#">Bosing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="darslar">
+    <div class="slbl">Kurs tarkibi</div>
+    <h2>Barcha mavzular</h2>
+    <p>Har bir mavzu o'zbek tilida tushuntirilgan. Kod qatorma-qator izohlar bilan beriladi.</p>
+    <div class="grid" id="tg"></div>
+  </section>
+</div>
+
+<div id="lv">
+  <button class="back" onclick="showHome()">← Mavzularga qaytish</button>
+  <div class="lh">
+    <div class="slbl" id="ll"></div>
+    <h2 id="lt"></h2>
+    <p id="ls2"></p>
+  </div>
+  <div id="lc"></div>
+  <div class="lnav">
+    <button id="pb" onclick="changeLesson(-1)">← Oldingi</button>
+    <button class="nb" id="nb" onclick="changeLesson(1)">Keyingi →</button>
+  </div>
+</div>
+
+<footer>
+  <button class="logo" onclick="showHome()" style="font-size:17px">NC</button>
+  <p>HTML ni o'zbek tilida o'rganing · Bepul</p>
+</footer>
+
+<script>
+// ---- syntax highlight ----
+function hl(s){
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/(&lt;!--[\s\S]*?--&gt;)/g,'<span class="cc">$1</span>');
+  s = s.replace(/(&lt;!DOCTYPE[^&]*&gt;)/gi,'<span class="cd">$1</span>');
+  s = s.replace(/(&lt;\/)([a-zA-Z0-9]+)(&gt;)/g,'<span class="cb">$1</span><span class="ct">$2</span><span class="cb">$3</span>');
+  s = s.replace(/(&lt;)([a-zA-Z0-9]+)((?:\s[^&<]*)?)(\s*\/?)(&gt;)/g,(m,ob,tag,attrs,sl,cb)=>{
+    let a=attrs.replace(/([a-zA-Z\-:]+)(=)("([^"]*)")/g,'<span class="ca">$1</span><span class="ce">=</span><span class="cv">"$4"</span>');
+    return `<span class="cb">${ob}</span><span class="ct">${tag}</span>${a}${sl}<span class="cb">${cb}</span>`;
+  });
+  return s;
+}
+
+// ---- code block with line numbers + explanations ----
+function makeCode(lines, fname){
+  fname = fname||'index.html';
+  let rows = lines.map((l,i)=>{
+    let code = l.code||'';
+    let exp = l.exp||'';
+    let html = `<div class="ln">
+      <span class="ln-num">${i+1}</span>
+      <span class="ln-code">${hl(code)}</span>
+    </div>`;
+    if(exp) html += `<div class="ln-explain">↳ ${exp}</div>`;
+    return html;
+  }).join('');
+  return `<div class="code-block">
+    <div class="cb-bar">
+      <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+      <span>${fname}</span>
+    </div>
+    <div class="cb-lines">${rows}</div>
+  </div>`;
+}
+
+// ---- tag table ----
+function makeTable(rows){
+  let r = rows.map(r=>`<div class="ct-row">
+    <div class="ct-code">${hl(r[0])}</div>
+    <div class="ct-desc"><div><span>${r[1]}</span>${r[2]}</div></div>
+  </div>`).join('');
+  return `<div class="code-table">
+    <div class="ct-header"><span>Kod</span><span>Vazifasi</span></div>
+    ${r}
+  </div>`;
+}
+
+const topics = [
+{icon:"🌐",name:"HTML Kirish",desc:"HTML nima va u qanday ishlaydi",num:"Dars 01",subtitle:"Web-dasturlashning asosi",
+ content:[
+  {h:"HTML nima?",p:"HTML (HyperText Markup Language) — web-sahifalarni yaratish uchun ishlatiladigan belgilash tili. Har bir web-sayt HTML asosida qurilgan. Brauzer HTML faylini o'qib, uni ekranda chiroyli ko'rinishda namoyish etadi.",
+   code:[
+    {code:"<!DOCTYPE html>",exp:"Bu HTML5 hujjati ekanligini brauzerga bildiradi — har doim birinchi qatorda bo'lishi shart"},
+    {code:"<html lang=\"uz\">",exp:"Butun sahifani o'rab turuvchi asosiy teg. lang='uz' — sahifa tili o'zbekcha ekanini bildiradi"},
+    {code:"  <head>",exp:"Sahifa haqidagi maxfiy ma'lumotlar joyi — foydalanuvchi ekranda bu qismni ko'rmaydi"},
+    {code:"    <title>Sahifa nomi</title>",exp:"Brauzer tabida va qidiruv natijasida ko'rinadigan sarlavha"},
+    {code:"  </head>",exp:"head bo'limining yopilishi"},
+    {code:"  <body>",exp:"Foydalanuvchi ekranda ko'radigan barcha kontent shu yerda joylashadi"},
+    {code:"    <h1>Salom, dunyo!</h1>",exp:"Eng katta sarlavha (1-daraja). Sahifada odatda faqat bitta h1 bo'ladi"},
+    {code:"    <p>Bu mening birinchi sahifam.</p>",exp:"Oddiy paragraf (matn) elementi — eng ko'p ishlatiladigan teglardan biri"},
+    {code:"  </body>",exp:"body bo'limining yopilishi"},
+    {code:"</html>",exp:"Butun HTML hujjatining yakunlanishi — boshqa hech narsa bu tegdan keyin yozilmaydi"},
+   ]},
+  {h:"Asosiy teglar jadvali",
+   table:[
+    ["<!DOCTYPE html>","Hujjat turi","Brauzerga bu HTML5 ekanligini aytadi. Har doim birinchi qatorda."],
+    ["<html>","Ildiz element","Barcha HTML kodini o'rab turadi. lang atributi tilni belgilaydi."],
+    ["<head>","Bosh qism","Title, CSS ulanishi, meta teglar — ko'rinmaydigan sozlamalar."],
+    ["<body>","Asosiy kontent","Foydalanuvchi ko'radigan barcha matn, rasm, tugmalar shu yerda."],
+    ["<title>","Sahifa sarlavhasi","Brauzer tabida ko'rinadigan nom. SEO uchun juda muhim."],
+   ]}
+ ]},
+
+{icon:"🏷️",name:"HTML Elementlar",desc:"Teglar, elementlar va tuzilma",num:"Dars 02",subtitle:"HTML ning asosiy qurilish bloklari",
+ content:[
+  {h:"Sarlavhalar (h1 — h6)",p:"HTML da 6 xil sarlavha darajasi bor. h1 eng katta va muhim, h6 eng kichik. Qidiruv tizimlari (Google) sarlavhalarni diqqat bilan o'qiydi.",
+   code:[
+    {code:"<h1>Asosiy sarlavha</h1>",exp:"1-daraja: Sahifaning bosh nomi. Faqat BITTA bo'lishi kerak. Google uchun eng muhimi."},
+    {code:"<h2>Bo'lim sarlavhasi</h2>",exp:"2-daraja: Katta bo'limlar sarlavhasi. Bir sahifada bir nechtasi bo'lishi mumkin."},
+    {code:"<h3>Kichik bo'lim</h3>",exp:"3-daraja: h2 ichidagi kichik bo'limlar uchun ishlatiladi."},
+    {code:"<h4>Tarmoq sarlavha</h4>",exp:"4-daraja: Kamroq ishlatiladigan pastki sarlavha."},
+    {code:"<h5>Mayda sarlavha</h5>",exp:"5-daraja: Juda kam hollarda ishlatiladi."},
+    {code:"<h6>Eng kichik</h6>",exp:"6-daraja: Eng kichik sarlavha. Odatda kamdan-kam ishlatiladi."},
+   ]},
+  {h:"Matn formatlash teglari",
+   table:[
+    ["<p>Matn</p>","Paragraf","Oddiy matn bloki. Avtomatik yangi qatordan boshlanadi va pastdan bo'sh joy qoladi."],
+    ["<strong>Matn</strong>","Qalin matn","Matnni qalin (bold) qiladi. Muhim ma'lumotlar uchun. SEO uchun ham ahamiyatli."],
+    ["<em>Matn</em>","Kursiv matn","Matnni qiya (italic) qiladi. Urg'u berish yoki atama uchun ishlatiladi."],
+    ["<br>","Qator uzish","Yangi qatorga o'tadi. Yopilmaydigan (bo'sh) element — </br> deb yozilmaydi."],
+    ["<hr>","Gorizontal chiziq","Sahifada gorizontal ajratuvchi chiziq chizadi. Bo'sh element."],
+    ["<mark>Matn</mark>","Belgilash","Matnni sariq fon bilan belgilaydi (marker qiladi)."],
+    ["<small>Matn</small>","Kichik matn","Matnni odatdagidan kichikroq ko'rsatadi. Izohlar uchun yaxshi."],
+    ["<del>Matn</del>","O'chirilgan matn","Ustidan chizilgan matn. Narx taqqoslashlarda ko'p ishlatiladi."],
+   ]}
+ ]},
+
+{icon:"⚙️",name:"HTML Atributlar",desc:"Elementlarga xususiyat berish",num:"Dars 03",subtitle:"Atributlar bilan elementlarni kuchaytirish",
+ content:[
+  {h:"Atribut nima?",p:"Atributlar HTML elementlariga qo'shimcha ma'lumot va xususiyat beradi. Ular har doim ochuvchi tegning ichida yoziladi va ism='qiymat' formatida bo'ladi.",
+   code:[
+    {code:"<a href=\"https://google.com\">Google</a>",exp:"href — havolaning manzili (URL). 'a' tegi bu atributsiz faqat oddiy matn bo'lib qoladi."},
+    {code:"<img src=\"rasm.jpg\" alt=\"Tavsif\">",exp:"src — rasm manzili. alt — rasm yuklanmasa yoki ko'zi ojizlar uchun ko'rinadigan matn."},
+    {code:"<p class=\"sariq\" id=\"birinchi\">Matn</p>",exp:"class — CSS uslub berish uchun (bir nechta element bir classda bo'lishi mumkin). id — yagona tanlov uchun (sahifada faqat bitta bo'lishi shart)."},
+    {code:"<input type=\"text\" placeholder=\"Ismingiz\">",exp:"type — input turi (text, email, password...). placeholder — maydon bo'sh paytda ko'rinadigan hint-matn."},
+    {code:"<div style=\"color:red; font-size:18px\">Matn</div>",exp:"style — to'g'ridan-to'g'ri CSS uslub berish. Yaxshi amaliyot emas — alohida CSS fayl yaxshiroq."},
+   ]},
+  {h:"Eng muhim atributlar",
+   table:[
+    ["href=\"URL\"","Havola manzili","<a> tegida ishlatilib, qayerga o'tishni belgilaydi."],
+    ["src=\"fayl.jpg\"","Manba manzili","<img>, <script>, <iframe> teglari uchun fayl yo'lini ko'rsatadi."],
+    ["alt=\"tavsif\"","Muqobil matn","Rasm yuklanmasa yoki screen reader uchun ko'rinadigan matn. Majburiy!"],
+    ["class=\"nom\"","CSS sinfi","CSS da .nom selektori bilan uslub berish uchun. Bir nechta elementda bir xil bo'lishi mumkin."],
+    ["id=\"nom\"","Yagona identifikator","Sahifada faqat bitta element shu idga ega bo'lishi kerak. JS va ankor link uchun."],
+    ["style=\"...\"","Inline CSS","To'g'ridan-to'g'ri element ichida CSS. Faqat zarur hollarda ishlating."],
+    ["target=\"_blank\"","Yangi oynada ochish","Faqat <a> tegida. Tashqi saytlarni yangi oynada ochadi."],
+    ["type=\"...\"","Element turi","<input> va <button> uchun: text, email, password, submit, button..."],
+   ]}
+ ]},
+
+{icon:"🔗",name:"HTML Havolalar",desc:"href bilan linklar yaratish",num:"Dars 04",subtitle:"Sahifalar va resurslarni bog'lash",
+ content:[
+  {h:"Havola yaratish — <a> tegi",p:"<a> (anchor — langar) tegi havola yaratadi. href atributisiz u oddiy matn, href bilan esa bosiladigan link bo'ladi.",
+   code:[
+    {code:"<a href=\"https://google.com\">Google</a>",exp:"Tashqi saytga havola. https:// bilan boshlash shart — aks holda noto'g'ri yo'l bo'ladi."},
+    {code:"<a href=\"sahifa.html\">Biz haqimizda</a>",exp:"O'z saytingiz ichidagi boshqa sahifaga havola (nisbiy yo'l)."},
+    {code:"<a href=\"https://google.com\" target=\"_blank\">Google</a>",exp:"target='_blank' — havolani yangi tabda (oynada) ochadi. Tashqi saytlar uchun yaxshi amaliyot."},
+    {code:"<a href=\"mailto:info@sayt.uz\">Email yuboring</a>",exp:"mailto: — bosqanda foydalanuvchining email dasturini ochadi."},
+    {code:"<a href=\"tel:+998901234567\">Qo'ng'iroq</a>",exp:"tel: — mobil qurilmada bosqanda to'g'ridan-to'g'ri qo'ng'iroq qiladi."},
+    {code:"<a href=\"#bolim\">Pastga o'tish</a>",exp:"# — sahifa ichidagi ankor. Shu id-ga ega elementga siljiydi."},
+    {code:"<a href=\"#bolim\" id=\"bolim\">Bu bo'lim</a>",exp:"id='bolim' — yuqoridagi ankor havolaning borish manzili."},
+   ]},
+  {h:"href qiymatlari",
+   table:[
+    ["href=\"https://...\"","Tashqi havola","To'liq URL. https:// bilan boshlash shart."],
+    ["href=\"sahifa.html\"","Ichki havola","Joriy papkadagi boshqa HTML fayl."],
+    ["href=\"../sahifa.html\"","Bir papka yuqori","../ — bir daraja yuqoriga chiqadi."],
+    ["href=\"#id\"","Ankor","Sahifa ichidagi bo'limga siljitadi."],
+    ["href=\"mailto:...\"","Email","Foydalanuvchining pochta dasturini ochadi."],
+    ["href=\"tel:...\"","Telefon","Mobil qurilmada qo'ng'iroq qiladi."],
+   ]}
+ ]},
+
+{icon:"🖼️",name:"HTML Rasmlar",desc:"img tegi bilan rasm qo'shish",num:"Dars 05",subtitle:"Veb-saytga vizual kontent qo'shish",
+ content:[
+  {h:"Rasm qo'shish — <img> tegi",p:"<img> yopilmaydigan bo'sh element. src va alt atributlari majburiy hisoblanadi. alt atributi SEO va imkoniyat uchun juda muhim.",
+   code:[
+    {code:"<img src=\"rasm.jpg\" alt=\"Tog' manzarasi\">",exp:"Eng oddiy rasm. src — rasm fayl manzili, alt — rasm tavsifi (yuklanmasa ko'rinadi)."},
+    {code:"<img src=\"logo.png\" alt=\"Kompaniya logosi\" width=\"200\">",exp:"width — rasmning kengligi pikselda. height ko'rsatilmasa proporsional kichrayadi."},
+    {code:"<img src=\"https://sayt.uz/rasm.jpg\" alt=\"Onlayn rasm\">",exp:"Internetdagi rasm manzilini to'g'ridan-to'g'ri ishlatish mumkin (CDN)."},
+    {code:"<figure>",exp:"Rasm va uning izohini birga guruhlovchi semantik teg."},
+    {code:"  <img src=\"rasm.jpg\" alt=\"Bahor manzarasi\">",exp:"Rasm elementi — figure ichida joylashgan."},
+    {code:"  <figcaption>Bahor fasli</figcaption>",exp:"Rasmning tavsifi (izoh) — foydalanuvchiga ko'rinadigan yozuv."},
+    {code:"</figure>",exp:"figure tegining yopilishi."},
+   ]},
+  {h:"Rasm atributlari",
+   table:[
+    ["src=\"fayl.jpg\"","Rasm manzili","Majburiy. Nisbiy yoki to'liq URL bo'lishi mumkin."],
+    ["alt=\"tavsif\"","Muqobil matn","Majburiy. SEO, imkoniyat va rasm yuklanmasa zarur."],
+    ["width=\"200\"","Kenglik","Pikselda. Faqat width berish — balandlik proporsional o'zgaradi."],
+    ["height=\"150\"","Balandlik","Pikselda. width bilan birgalikda sahifa siljishini oldini oladi."],
+    ["loading=\"lazy\"","Kech yuklash","Ekranga kelganda yuklanadi. Sahifa tezligini oshiradi."],
+    ["title=\"matn\"","Hover tooltip","Rasm ustiga sichqoncha olib kelinganda ko'rinadigan matn."],
+   ]}
+ ]},
+
+{icon:"📋",name:"HTML Ro'yxatlar",desc:"ul, ol va li teglari",num:"Dars 06",subtitle:"Tartibli va tartibsiz ro'yxatlar",
+ content:[
+  {h:"Ro'yxat turlari",p:"HTML da ikki asosiy ro'yxat turi bor: tartibsiz ro'yxat (ul — nuqta bilan) va tartibli ro'yxat (ol — raqam bilan). Har ikkalasida ham elementlar <li> tegi bilan yoziladi.",
+   code:[
+    {code:"<ul>",exp:"Tartibsiz ro'yxat (Unordered List) — har bir element oldida nuqta (•) ko'rinadi."},
+    {code:"  <li>Olma</li>",exp:"li (List Item) — ro'yxat elementi. ul ichida nuqta, ol ichida raqam ko'rinadi."},
+    {code:"  <li>Banan</li>",exp:"Ikkinchi element — avtomatik nuqta qo'yiladi."},
+    {code:"  <li>Gilos</li>",exp:"Uchinchi element."},
+    {code:"</ul>",exp:"ul ning yopilishi — barcha elementlar shu yerda tugaydi."},
+    {code:"",exp:""},
+    {code:"<ol>",exp:"Tartibli ro'yxat (Ordered List) — har bir element oldida raqam (1, 2, 3...) ko'rinadi."},
+    {code:"  <li>Birinchi qadam</li>",exp:"Avtomatik '1.' raqami qo'yiladi."},
+    {code:"  <li>Ikkinchi qadam</li>",exp:"Avtomatik '2.' raqami qo'yiladi."},
+    {code:"  <li>Uchinchi qadam</li>",exp:"Avtomatik '3.' raqami qo'yiladi."},
+    {code:"</ol>",exp:"ol ning yopilishi."},
+   ]},
+  {h:"Ro'yxat teglari",
+   table:[
+    ["<ul>","Tartibsiz ro'yxat","Nuqtali ro'yxat. Tartib muhim bo'lmaganda — oziq-ovqat, xususiyatlar."],
+    ["<ol>","Tartibli ro'yxat","Raqamli ro'yxat. Tartib muhim bo'lganda — qadamlar, reytinglar."],
+    ["<li>","Ro'yxat elementi","ul yoki ol ichida bo'lishi shart. Yakka ishlatilmaydi."],
+    ["<dl>","Ta'rif ro'yxati","Atama va uning ta'rifi uchun maxsus ro'yxat turi."],
+    ["<dt>","Atama","dl ichida — ta'riflanadigan so'z yoki ibora."],
+    ["<dd>","Ta'rif","dl ichida — dt ning tavsifi, ikkinchi darajali joylashadi."],
+   ]}
+ ]},
+
+{icon:"📊",name:"HTML Jadvallar",desc:"table, tr, th, td teglari",num:"Dars 07",subtitle:"Ma'lumotlarni jadval shaklida taqdim etish",
+ content:[
+  {h:"Jadval yaratish",p:"HTML jadval — <table> tegi bilan boshlanadi. Har bir qator <tr> (Table Row), sarlavha kataklar <th> (Table Header), oddiy kataklar <td> (Table Data) bilan yoziladi.",
+   code:[
+    {code:"<table border=\"1\">",exp:"Jadval boshi. border='1' — atrofida ko'rinadigan chegara chizadi (CSS bilan yaxshilash mumkin)."},
+    {code:"  <thead>",exp:"Jadval sarlavha qatori guruhi — semantik jihatdan ajratilgan sarlavha qismi."},
+    {code:"    <tr>",exp:"tr (Table Row) — yangi jadval qatori ochadi."},
+    {code:"      <th>Ism</th>",exp:"th (Table Header) — sarlavha katakcha. Qalin va markazlashgan ko'rinadi."},
+    {code:"      <th>Yosh</th>",exp:"Ikkinchi sarlavha ustuni."},
+    {code:"      <th>Shahar</th>",exp:"Uchinchi sarlavha ustuni."},
+    {code:"    </tr>",exp:"Sarlavha qatorining yopilishi."},
+    {code:"  </thead>",exp:"Sarlavha guruhining yopilishi."},
+    {code:"  <tbody>",exp:"Asosiy ma'lumotlar qismi — brauzer bu qismni alohida ko'rib chiqadi."},
+    {code:"    <tr>",exp:"Birinchi ma'lumot qatori."},
+    {code:"      <td>Alibek</td>",exp:"td (Table Data) — oddiy ma'lumot katakchasi."},
+    {code:"      <td>22</td>",exp:"Yosh ustunidagi ma'lumot."},
+    {code:"      <td>Toshkent</td>",exp:"Shahar ustunidagi ma'lumot."},
+    {code:"    </tr>",exp:"Birinchi ma'lumot qatorining yopilishi."},
+    {code:"  </tbody>",exp:"Asosiy ma'lumotlar guruhining yopilishi."},
+    {code:"</table>",exp:"Butun jadvalning yopilishi."},
+   ]},
+  {h:"Jadval teglari",
+   table:[
+    ["<table>","Jadval konteyner","Butun jadvalni o'rab turadi. border, cellpadding atributlari bor."],
+    ["<thead>","Sarlavha guruhi","Jadvalning sarlavha qismi. Sahifani chop etganda har sahifada takrorlanadi."],
+    ["<tbody>","Kontent guruhi","Asosiy ma'lumotlar joylashadigan qism."],
+    ["<tfoot>","Oyoq qismi","Jadvalning pastki qismi — jami, yig'indi kabi ma'lumotlar uchun."],
+    ["<tr>","Jadval qatori","Yangi gorizontal qator ochadi. thead, tbody, tfoot ichida bo'ladi."],
+    ["<th>","Sarlavha katakcha","Qalin va markazlashgan. Screen reader uchun muhim."],
+    ["<td>","Ma'lumot katakcha","Oddiy ma'lumot joylashadigan katakcha."],
+    ["colspan=\"2\"","Ustun birlashtirish","Bir nechta ustunga yoyiladigan katakcha yaratadi."],
+    ["rowspan=\"2\"","Qator birlashtirish","Bir nechta qatorga yoyiladigan katakcha yaratadi."],
+   ]}
+ ]},
+
+{icon:"📝",name:"HTML Formalar",desc:"Foydalanuvchidan ma'lumot olish",num:"Dars 08",subtitle:"Login, ro'yxatdan o'tish, izoh formlari",
+ content:[
+  {h:"Forma yaratish",p:"<form> tegi foydalanuvchidan ma'lumot to'plash uchun ishlatiladi. Ichida input, textarea, select, button kabi elementlar bo'ladi. action — ma'lumot yuborilganda qaysi serverga borishini, method — qanday yuborilishini bildiradi.",
+   code:[
+    {code:"<form action=\"/yuborish\" method=\"POST\">",exp:"action — forma yuborilganda so'rov boradigan URL. method='POST' — ma'lumotni maxfiy yuboradi."},
+    {code:"  <label for=\"ism\">Ism:</label>",exp:"label — input uchun yozuv. for='ism' — qaysi input bilan bog'liqligini belgilaydi. Bosganda input faollashadi."},
+    {code:"  <input type=\"text\" id=\"ism\" name=\"ism\" placeholder=\"Ismingiz\">",exp:"type='text' — oddiy matn maydoni. id — label bilan bog'liq. name — server ma'lumotni shu nom bilan oladi."},
+    {code:"  <label for=\"email\">Email:</label>",exp:"Email maydoni uchun yozuv."},
+    {code:"  <input type=\"email\" id=\"email\" name=\"email\">",exp:"type='email' — email formatini tekshiradi. Noto'g'ri formatda yuborib bo'lmaydi."},
+    {code:"  <input type=\"password\" name=\"parol\">",exp:"type='password' — kiritilgan belgilar yulduzcha ko'rinadi. Parollar uchun."},
+    {code:"  <input type=\"checkbox\" name=\"eslab\" id=\"eslab\">",exp:"type='checkbox' — belgilash katakchasi. Bir nechta tanlov mumkin."},
+    {code:"  <label for=\"eslab\">Eslab qol</label>",exp:"Checkboxning yonidagi yozuv — bosganda checkbox belgilanadi."},
+    {code:"  <button type=\"submit\">Kirish</button>",exp:"type='submit' — bosganda formani yuboradi. type='button' esa faqat JS uchun."},
+    {code:"</form>",exp:"Forma tugadi. Barcha input elementlari shu yerda yopiladi."},
+   ]},
+  {h:"Input turlari",
+   table:[
+    ["type=\"text\"","Matn","Oddiy bir qatorli matn maydoni."],
+    ["type=\"email\"","Email","@ belgisi va to'g'ri format tekshiriladi."],
+    ["type=\"password\"","Parol","Belgilar yashiriladi (***)."],
+    ["type=\"number\"","Raqam","Faqat raqam kiritish mumkin. min, max atributlari bor."],
+    ["type=\"tel\"","Telefon","Mobilda maxsus raqam klaviaturasi chiqadi."],
+    ["type=\"checkbox\"","Belgilash","Ko'p tanlov uchun. checked atributi oldindan belgilaydi."],
+    ["type=\"radio\"","Yagona tanlov","Bir guruhdan faqat bitta tanlanishi uchun. name bir xil bo'lishi shart."],
+    ["type=\"file\"","Fayl yuklash","Foydalanuvchi qurilmasidan fayl tanlash imkonini beradi."],
+    ["type=\"date\"","Sana","Kalendar orqali sana tanlash."],
+    ["type=\"submit\"","Yuborish tugmasi","Formani serverga yuboradi."],
+    ["<textarea>","Ko'p qatorli","Bir nechta qatorli matn maydoni. rows va cols atributlari bor."],
+    ["<select>","Tanlash ro'yxati","Ochiladigan ro'yxat. Ichida <option> teglari."],
+   ]}
+ ]},
+
+{icon:"🎨",name:"HTML & CSS",desc:"Sahifaga dizayn berish",num:"Dars 09",subtitle:"CSS ni HTML ga ulashning 3 usuli",
+ content:[
+  {h:"CSS ni HTML ga ulash",p:"CSS (Cascading Style Sheets) — HTML elementlariga rang, o'lcham, joylashuv beradi. Uni HTML ga 3 xil usulda ulash mumkin. Har birining afzalliklari va kamchiliklari bor.",
+   code:[
+    {code:"<!-- 1-usul: Inline (to'g'ridan-to'g'ri) -->",exp:"Bu usulda CSS to'g'ridan-to'g'ri element ichida yoziladi. Faqat shu elementga ta'sir qiladi."},
+    {code:"<p style=\"color:red; font-size:20px;\">Matn</p>",exp:"style atributida CSS xususiyatlari yoziladi. Yaxshi amaliyot emas — kodni murakkablashtiradi."},
+    {code:"",exp:""},
+    {code:"<!-- 2-usul: Internal (<head> ichida) -->",exp:"CSS head ichida <style> tegi orqali yoziladi. Faqat shu sahifaga ta'sir qiladi."},
+    {code:"<head>",exp:"Head bo'limi."},
+    {code:"  <style>",exp:"CSS kodi shu teg ichiga yoziladi."},
+    {code:"    p { color: blue; margin: 10px; }",exp:"Barcha <p> elementlari ko'k rang va 10px masofa oladi."},
+    {code:"    h1 { background: yellow; font-size: 32px; }",exp:"Barcha <h1> elementlari sariq fon va 32px o'lcham oladi."},
+    {code:"  </style>",exp:"Style tegining yopilishi."},
+    {code:"</head>",exp:"Head bo'limining yopilishi."},
+    {code:"",exp:""},
+    {code:"<!-- 3-usul: External (alohida fayl) — ENG YAXSHI -->",exp:"Alohida .css fayl yaratiladi va head ichida ulanadi. Barcha sahifalarda ishlatish mumkin."},
+    {code:"<link rel=\"stylesheet\" href=\"style.css\">",exp:"rel='stylesheet' — bu CSS fayl ekanini bildiradi. href='style.css' — fayl manzili."},
+   ]},
+  {h:"CSS xususiyatlari (asosiy)",
+   table:[
+    ["color: red;","Matn rangi","Yashil: green, ko'k: blue, hex: #ff0000, rgb(255,0,0)"],
+    ["background: yellow;","Fon rangi","background-color bilan bir xil. Rasmni ham berish mumkin."],
+    ["font-size: 18px;","Shrift o'lchami","px, em, rem, % da berish mumkin. Asosiy — px."],
+    ["font-weight: bold;","Qalinlik","bold yoki 100-900 raqami. 400=normal, 700=bold."],
+    ["margin: 20px;","Tashqi masofa","Element atrofidagi bo'sh joy. top/right/bottom/left alohida."],
+    ["padding: 10px;","Ichki masofa","Element chegarasi va kontent orasidagi bo'sh joy."],
+    ["border: 1px solid black;","Chegara","Qalinlik, uslub (solid/dashed/dotted), rang."],
+    ["width: 300px;","Kenglik","px, %, vw da berish mumkin."],
+    ["text-align: center;","Matn joylashuvi","left, right, center, justify."],
+   ]}
+ ]},
+
+{icon:"📦",name:"Div va Span",desc:"Blok va inline konteynerlar",num:"Dars 10",subtitle:"Elementlarni guruhlash va tartibga solish",
+ content:[
+  {h:"div va span farqi",p:"<div> va <span> — o'z ma'nosi yo'q, faqat konteyner vazifasini bajaruvchi elementlar. Ular CSS bilan ishlashning asosi hisoblanadi. <div> blok element (yangi qatordan boshlaydi), <span> esa inline element (qator ichida ishlaydi).",
+   code:[
+    {code:"<!-- div — blok element -->",exp:"div elementi yangi qatordan boshlanadi va to'liq kenglikni egallaydi."},
+    {code:"<div class=\"karta\">",exp:"class='karta' — bu divga CSS orqali 'karta' klassi uslubi beriladi."},
+    {code:"  <h2>Mahsulot nomi</h2>",exp:"div ichiga istalgan elementlar joylashtirilishi mumkin."},
+    {code:"  <p>Tavsifi: Yuqori sifatli mahsulot.</p>",exp:"Paragraf elementi karta ichida."},
+    {code:"  <span class=\"narx\">50 000 so'm</span>",exp:"span — inline element, shu qatorda qoladi. Narxga alohida rang berish uchun."},
+    {code:"</div>",exp:"div ning yopilishi — barcha karta kontent tugadi."},
+    {code:"",exp:""},
+    {code:"<p>Bu <span style=\"color:red;\">muhim</span> so'z.</p>",exp:"span qator ichida faqat 'muhim' so'ziga rang beradi — qolgan matn o'zgarmaydi."},
+    {code:"",exp:""},
+    {code:"<div class=\"header\">",exp:"Sahifa sarlavha bo'limi — ichiga nav, logo joylashtiriladi."},
+    {code:"  <div class=\"logo\">NC</div>",exp:"Logo uchun alohida div — CSS bilan pozitsiya va rang beriladi."},
+    {code:"  <div class=\"menu\">Darslar | Haqida</div>",exp:"Menu uchun alohida div."},
+    {code:"</div>",exp:"Header divining yopilishi."},
+   ]},
+  {h:"div vs span",
+   table:[
+    ["<div>","Blok konteyner","Yangi qatordan boshlaydi. Keng makon egallaydi. Layout uchun."],
+    ["<span>","Inline konteyner","Qator ichida joylashadi. Faqat kontent kengligi. Matn ichida."],
+    ["class=\"nom\"","CSS sinfi","Bir yoki bir nechta elementga bir xil uslub berish uchun."],
+    ["id=\"nom\"","Yagona ID","Sahifada faqat bitta. JavaScript va ankor uchun ishlatiladi."],
+   ]}
+ ]},
+
+{icon:"🏗️",name:"Semantik HTML",desc:"header, main, footer, article",num:"Dars 11",subtitle:"Ma'noli va to'g'ri tuzilgan HTML",
+ content:[
+  {h:"Semantik elementlar nima?",p:"Semantik elementlar — o'z ma'nosini anglатuvchi teglar. <div> va <span> hech nima aytmaydi, lekin <header>, <nav>, <main>, <footer> brauzerga va qidiruv tizimlarga sahifa tuzilmasi haqida ma'lumot beradi.",
+   code:[
+    {code:"<!DOCTYPE html>",exp:"HTML5 hujjat turi."},
+    {code:"<html lang=\"uz\">",exp:"Sahifa tili o'zbekcha."},
+    {code:"<body>",exp:"Ko'rinadigan kontent boshlanishi."},
+    {code:"  <header>",exp:"Sahifaning yuqori qismi — logo, sarlavha, navigatsiya joylashadi. Sahifada yoki <article> ichida bo'lishi mumkin."},
+    {code:"    <h1>Sayt nomi</h1>",exp:"Asosiy sarlavha — brauzer tabida va qidiruvda ko'rinadi."},
+    {code:"    <nav>",exp:"Navigatsiya menyusi — sahifalar orasidagi havolalar guruhi."},
+    {code:"      <a href=\"/\">Bosh sahifa</a>",exp:"Asosiy sahifaga havola."},
+    {code:"      <a href=\"/darslar\">Darslar</a>",exp:"Darslar sahifasiga havola."},
+    {code:"    </nav>",exp:"Navigatsiyaning yopilishi."},
+    {code:"  </header>",exp:"Header bo'limining yopilishi."},
+    {code:"  <main>",exp:"Sahifaning asosiy unikal kontenti — har sahifada faqat bitta <main> bo'ladi."},
+    {code:"    <article>",exp:"Mustaqil kontent — blog maqola, yangilik, izoh. O'zicha to'liq ma'noga ega."},
+    {code:"      <h2>Maqola sarlavhasi</h2>",exp:"Maqola sarlavhasi."},
+    {code:"      <p>Maqola matni bu yerda...</p>",exp:"Maqola kontenti."},
+    {code:"    </article>",exp:"Article ning yopilishi."},
+    {code:"    <aside>",exp:"Yon panel — qo'shimcha ma'lumot, reklama, teglar. Asosiy kontentga bog'liq lekin undan alohida."},
+    {code:"      <h3>Teglar</h3>",exp:"Yon panel sarlavhasi."},
+    {code:"    </aside>",exp:"Aside ning yopilishi."},
+    {code:"  </main>",exp:"Main bo'limining yopilishi."},
+    {code:"  <footer>",exp:"Sahifaning pastki qismi — mualliflik, aloqa, qo'shimcha havolalar."},
+    {code:"    <p>© 2026 NC. Barcha huquqlar himoyalangan.</p>",exp:"Mualliflik huquqi yozuvi."},
+    {code:"  </footer>",exp:"Footer ning yopilishi."},
+    {code:"</body>",exp:"Ko'rinadigan kontent tugashi."},
+    {code:"</html>",exp:"HTML hujjatning to'liq tugashi."},
+   ]},
+  {h:"Semantik teglar",
+   table:[
+    ["<header>","Yuqori qism","Logo, sarlavha, navigatsiya. <div id='header'> o'rniga ishlatiladi."],
+    ["<nav>","Navigatsiya","Asosiy menyu va havolalar guruhi uchun."],
+    ["<main>","Asosiy kontent","Sahifadagi yagona asosiy kontent. Faqat bitta bo'lishi shart."],
+    ["<article>","Maqola","Mustaqil kontent — blog post, yangilik, izoh."],
+    ["<section>","Bo'lim","Bir mavzuga oid kontent guruhi. Odatda sarlavhasi bo'ladi."],
+    ["<aside>","Yon panel","Asosiy kontentga bog'liq qo'shimcha ma'lumot."],
+    ["<footer>","Pastki qism","Mualliflik, aloqa ma'lumoti, qo'shimcha havolalar."],
+    ["<figure>","Rasm guruh","Rasm va figcaption birga. Mustaqil vizual kontent uchun."],
+    ["<figcaption>","Rasm izoh","figure ichidagi rasm tavsifi."],
+   ]}
+ ]},
+
+{icon:"📱",name:"Responsive Design",desc:"Barcha ekranlarga moslashish",num:"Dars 12",subtitle:"Telefon, planshet va kompyuterda to'g'ri ko'rinish",
+ content:[
+  {h:"Viewport va media query",p:"Responsive dizayn saytni turli ekran o'lchamlariga avtomatik moslashtiradi. Buning uchun birinchi navbatda <meta viewport> tegi, keyin esa CSS media query ishlatiladi.",
+   code:[
+    {code:"<!-- HEAD ichiga qo'shiladi -->",exp:"Quyidagi teg barcha zamonaviy saytlarda bo'lishi SHART."},
+    {code:"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",exp:"width=device-width — sahifa kengligi qurilma ekraniga teng bo'lsin. initial-scale=1.0 — boshlang'ich kattalashtirish 100%."},
+    {code:"",exp:""},
+    {code:"<!-- style.css faylida yoki <style> ichida -->",exp:"CSS da turli ekranlar uchun qoidalar."},
+    {code:".konteyner {",exp:"Odatiy (katta ekran) uslublari — hamma ekranga tatbiq bo'ladi."},
+    {code:"  width: 1200px;",exp:"Katta ekranda kenglik 1200 piksel."},
+    {code:"  margin: 0 auto;",exp:"Sahifa markaziga joylashtiradi."},
+    {code:"}",exp:""},
+    {code:"",exp:""},
+    {code:"@media (max-width: 768px) {",exp:"Agar ekran kengligi 768px yoki kichik bo'lsa (planshet) — bu qoidalar ishlaydi."},
+    {code:"  .konteyner { width: 100%; padding: 0 16px; }",exp:"Planshetda to'liq kenglik + yon bo'shliq."},
+    {code:"  .ustunlar { flex-direction: column; }",ep:"Gorizontal ustunlar vertikal bo'ladi."},
+    {code:"}",exp:"Planshet media query tugadi."},
+    {code:"",exp:""},
+    {code:"@media (max-width: 480px) {",exp:"Agar ekran kengligi 480px yoki kichik bo'lsa (telefon)."},
+    {code:"  .menu { display: none; }",exp:"Telefonda katta menyu yashiriladi — hamburger menyu o'rniga."},
+    {code:"  body { font-size: 14px; }",exp:"Telefonda shrift biroz kichikroq."},
+    {code:"  h1 { font-size: 24px; }",exp:"Katta sarlavha telefonning kichik ekraniga moslanadi."},
+    {code:"}",exp:"Telefon media query tugadi."},
+   ]},
+  {h:"Media query breakpointlari",
+   table:[
+    ["max-width: 480px","Telefon","Kichik ekranli smartfonlar uchun. Font kichrayadi, ustunlar birga yig'iladi."],
+    ["max-width: 768px","Planshet","iPad va boshqa planshetlar. Ko'pincha 2 ustundan 1 ustunga o'tadi."],
+    ["max-width: 1024px","Kichik laptop","Kichik noutbuklar va katta planshetlar."],
+    ["min-width: 1200px","Katta ekran","Desktop kompyuter va katta monitorlar."],
+    ["<meta viewport>","Majburiy teg","Bu tegsiz telefon sahifani kichraytirib ko'rsatadi — qo'yish SHART."],
+   ]}
+ ]},
+];
+
+let cur = 0;
+
+// hero code preview
+document.getElementById('hero-code').innerHTML = [
+  {c:'<span class="cd">&lt;!DOCTYPE html&gt;</span>'},
+  {c:'<span class="cb">&lt;</span><span class="ct">html</span> <span class="ca">lang</span><span class="ce">=</span><span class="cv">"uz"</span><span class="cb">&gt;</span>'},
+  {c:'<span class="cb">&lt;</span><span class="ct">body</span><span class="cb">&gt;</span>'},
+  {c:'&nbsp;&nbsp;<span class="cb">&lt;</span><span class="ct">h1</span><span class="cb">&gt;</span><span class="cx">Salom, dunyo!</span><span class="cb">&lt;/</span><span class="ct">h1</span><span class="cb">&gt;</span>'},
+  {c:'&nbsp;&nbsp;<span class="cb">&lt;</span><span class="ct">p</span><span class="cb">&gt;</span><span class="cx">Bu mening saytim.</span><span class="cb">&lt;/</span><span class="ct">p</span><span class="cb">&gt;</span>'},
+  {c:'&nbsp;&nbsp;<span class="cb">&lt;</span><span class="ct">a</span> <span class="ca">href</span><span class="ce">=</span><span class="cv">"#"</span><span class="cb">&gt;</span><span class="cx">Bosing</span><span class="cb">&lt;/</span><span class="ct">a</span><span class="cb">&gt;</span>'},
+  {c:'<span class="cb">&lt;/</span><span class="ct">body</span><span class="cb">&gt;</span>'},
+  {c:'<span class="cb">&lt;/</span><span class="ct">html</span><span class="cb">&gt;</span>'},
+].map(l=>`<div style="display:block;line-height:2">${l.c}</div>`).join('');
+
+function buildGrid(){
+  document.getElementById('tg').innerHTML = topics.map((t,i)=>
+    `<a class="tc" onclick="showLesson(${i})">
+      <span class="ti">${t.icon}</span>
+      <div class="tn">${t.name}</div>
+      <div class="td">${t.desc}</div>
+      <div class="tnum">${t.num}</div>
+    </a>`).join('');
+}
+
+function showHome(){
+  document.getElementById('hv').style.display='block';
+  document.getElementById('lv').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showLesson(i){
+  cur=i;
+  const t=topics[i];
+  document.getElementById('hv').style.display='none';
+  document.getElementById('lv').style.display='block';
+  document.getElementById('ll').textContent=t.num+' · HTML Kursi';
+  document.getElementById('lt').innerHTML=t.icon+' '+t.name;
+  document.getElementById('ls2').textContent=t.subtitle;
+
+  let html='';
+  t.content.forEach(s=>{
+    html+=`<div class="ls"><h3>${s.h}</h3>`;
+    if(s.p) html+=`<p>${s.p}</p>`;
+    if(s.code) html+=makeCode(s.code);
+    if(s.table) html+=makeTable(s.table);
+    if(s.note) html+=`<div class="info"><strong>💡 Eslatma:</strong> ${s.note}</div>`;
+    html+='</div>';
+  });
+  document.getElementById('lc').innerHTML=html;
+
+  document.getElementById('pb').style.visibility=i===0?'hidden':'visible';
+  document.getElementById('nb').textContent=i===topics.length-1?'✓ Tugatish':'Keyingi →';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function changeLesson(d){
+  const n=cur+d;
+  if(n<0||n>=topics.length)return showHome();
+  showLesson(n);
+}
+
+buildGrid();
+</script>
